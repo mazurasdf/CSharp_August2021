@@ -67,7 +67,7 @@ namespace Class_Intro
             sbeve.ServeDinner();
             sbeve.PrintStatus();
 
-            Robot bender = new Robot();
+            Robot bender = new Robot("Bender");
         }
     }
 }
