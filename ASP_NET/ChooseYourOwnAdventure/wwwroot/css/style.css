@@ -1,0 +1,24 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+#container{
+    width: 50%;
+    height: 100vh;
+    background-color: whitesmoke;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+marquee{
+    font-size: 50px;
+}
+
+.door{
+    font-size: 40px;
+    padding: 20px;
+}
