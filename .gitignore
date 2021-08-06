@@ -324,3 +324,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore,dotnetcore,visualstudiocode,windows
+
+# personally added by me
+lib/
