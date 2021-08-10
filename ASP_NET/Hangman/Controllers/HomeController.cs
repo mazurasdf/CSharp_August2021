@@ -36,7 +36,7 @@ namespace Hangman.Controllers
             {
                 underscores += "_";
             }
-            HttpContext.Session.SetString("correct", underscores);
+            HttpContext.Session.SetString("Correct", underscores);
             HttpContext.Session.SetString("incorrect", "");
 
             return RedirectToAction("Game");
@@ -45,30 +45,44 @@ namespace Hangman.Controllers
         [HttpGet("game")]
         public IActionResult Game()
         {
-            ViewBag.Correct = HttpContext.Session.GetString("correct");
+            ViewBag.Correct = HttpContext.Session.GetString("Correct");
             ViewBag.Incorrect = HttpContext.Session.GetString("incorrect");
             ViewBag.imgURL = Url.Content(HttpContext.Session.GetString("imgURL"));
             ViewBag.Answer = HttpContext.Session.GetString("Answer");
+
+            if(HttpContext.Session.GetString("Answer") == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             return View();
         }
 
         [HttpPost("guessLetter")]
-        public IActionResult GuessLetter(string letter)
-        {
+        public IActionResult GuessLetter(Guess guess)
+        {   
+            if(!ModelState.IsValid)
+            {
+                ViewBag.Correct = HttpContext.Session.GetString("Correct");
+                ViewBag.Incorrect = HttpContext.Session.GetString("incorrect");
+                ViewBag.imgURL = Url.Content(HttpContext.Session.GetString("imgURL"));
+                return View("Game");
+            }
+
             string answer = HttpContext.Session.GetString("Answer");
-            string oldCorrect = HttpContext.Session.GetString("correct");            
+            string oldCorrect = HttpContext.Session.GetString("Correct");            
             string incorrect = HttpContext.Session.GetString("incorrect");
 
             Console.WriteLine(answer);
-            if(answer.Contains(letter))
+            if(answer.Contains(guess.Letter))
             {
                 string correct = "";
 
                 for(int i = 0; i < answer.Length; ++i)
                 {
-                    if(answer[i] == letter[0])
+                    if(answer[i] == guess.Letter[0])
                     {
-                        correct += letter;
+                        correct += guess.Letter;
                     }
                     else
                     {
@@ -81,11 +95,11 @@ namespace Hangman.Controllers
                     HttpContext.Session.SetString("imgURL", "~/img/win.png");
                 }
 
-                HttpContext.Session.SetString("correct", correct);
+                HttpContext.Session.SetString("Correct", correct);
             }
             else
             {
-                incorrect += letter;
+                incorrect += guess.Letter;
                 HttpContext.Session.SetString("incorrect", incorrect);
 
                 string newURL = $"~/img/{incorrect.Length}.png";
