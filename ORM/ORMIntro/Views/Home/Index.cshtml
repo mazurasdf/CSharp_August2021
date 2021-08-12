@@ -1,0 +1,28 @@
+﻿<div id="container">
+    <a href="/form" class="btn btn-primary btn-lg">Create Sundae</a>
+
+    <table class="table table-dark table-hover">
+        <tr>
+            <th>Sundae ID</th>
+            <th>Name</th>
+            <th>Flavor</th>
+            <th>Scoops</th>
+            <th>Sauce</th>
+            <th>Topping</th>
+            <th>Actions</th>
+        </tr>
+
+        @foreach(Sundae sun in ViewBag.AllSundaes)
+        {
+            <tr>
+                <td>@sun.SundaeId</td>
+                <td><a href="/sundaes/@sun.SundaeId">@sun.Name</a></td>
+                <td>@sun.Flavor</td>
+                <td>@sun.Scoops</td>
+                <td>@sun.Sauce</td>
+                <td>@sun.Topping</td>
+                <td><a href="#" class="btn btn-sm btn-info">Edit</a> <a href="/sundaes/@sun.SundaeId/delete" class="btn btn-sm btn-danger">Delete</a></td>
+            </tr>
+        }
+    </table>
+</div>
