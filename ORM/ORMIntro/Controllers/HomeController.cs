@@ -66,6 +66,32 @@ namespace ORMIntro.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet("sundaes/{id}/edit")]
+        public IActionResult EditForm(int id)
+        {
+            Sundae displayMe = _context.Sundaes
+                .FirstOrDefault(sun => sun.SundaeId == id);
+
+            return View(displayMe);
+        }
+
+        [HttpPost("sundaes/submitEdit")]
+        public IActionResult SubmitEdit(Sundae editedSundae)
+        {
+            Sundae editMe = _context.Sundaes
+                .FirstOrDefault(sun => sun.SundaeId == editedSundae.SundaeId);
+
+            editMe.Name = editedSundae.Name;
+            editMe.Flavor = editedSundae.Flavor;
+            editMe.Scoops = editedSundae.Scoops;
+            editMe.Sauce = editedSundae.Sauce;
+            editMe.Topping = editedSundae.Topping;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("SingleSundae", new {id = editedSundae.SundaeId});
+        }
+
         public IActionResult Privacy()
         {
             return View();
