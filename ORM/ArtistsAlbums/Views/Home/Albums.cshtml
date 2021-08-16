@@ -1,0 +1,47 @@
+@model Album
+
+<div id="container">
+    <h1>Add a new album!</h1>
+
+    <form asp-controller="Home" asp-action="CreateAlbum" method="post">
+        <div class="form-group">
+            <label asp-for="AlbumName"></label>
+            <input asp-for="AlbumName" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ReleaseYear"></label>
+            <input asp-for="ReleaseYear" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CoverURL"></label>
+            <input asp-for="CoverURL" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ArtistId"></label>
+            <select asp-for="ArtistId" class="form-control">
+                @foreach(Artist art in ViewBag.AllArtists)
+                {
+                    <option value="@art.ArtistId">@art.ArtistName</option>
+                }
+            </select>
+        </div>
+
+        <input type="submit" class="btn btn-lg btn-primary">
+    </form>
+
+    <div class="d-flex justify-content-around">
+        @foreach(Album alb in ViewBag.AllAlbums)
+        {
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="@alb.CoverURL" alt="@alb.AlbumName">
+                <div class="card-body">
+                    <h5 class="card-title">@alb.AlbumName</h5>
+                    <p class="card-text">@alb.Creator.ArtistName</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

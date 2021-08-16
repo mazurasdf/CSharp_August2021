@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArtistsAlbums.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using LoginReg.Models;
-using Microsoft.EntityFrameworkCore;
 
-namespace LoginReg
+namespace ArtistsAlbums
 {
     public class Startup
     {
@@ -25,8 +25,6 @@ namespace LoginReg
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MyContext>(options => options.UseMySql (Configuration["DBInfo:ConnectionString"]));
-            services.AddSession();
-           
             services.AddControllersWithViews();
         }
 
@@ -44,8 +42,6 @@ namespace LoginReg
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseSession();
 
             app.UseAuthorization();
 

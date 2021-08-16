@@ -41,6 +41,10 @@ namespace SportsORM.Controllers
                 .Where(league => league.Sport.Contains("Hockey"))
                 .ToList();
 
+            ViewBag.ProblemFour = _context.Leagues
+                .Where(league => league.Name.Contains("Conference"))
+                .ToList();
+
             //...all teams based in Dallas
             ViewBag.ProblemSix = _context.Teams
                 .Where(team => team.Location == "Dallas")

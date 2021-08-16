@@ -22,7 +22,14 @@
                 </ul>
             </li>
             <li>...all leagues where sport is something OTHER THAN football</li>
-            <li>...all leagues that call themselves "conferences"</li>
+            <li>...all leagues that call themselves "conferences"
+                <ul>
+                @foreach(League league in ViewBag.ProblemFour)
+                {
+                    <li>@league.Name</li>
+                }
+                </ul>
+            </li>
             <li>...all leagues in the Atlantic region</li>
             <li>...all teams based in Dallas
                 <ul>
