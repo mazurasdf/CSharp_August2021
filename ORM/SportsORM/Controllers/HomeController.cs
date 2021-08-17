@@ -61,6 +61,19 @@ namespace SportsORM.Controllers
         [HttpGet("level_2")]
         public IActionResult Level2()
         {
+            ViewBag.ProblemFour = _context.Players
+                .Include(pl => pl.CurrentTeam)
+                .Include(pl => pl.CurrentTeam.CurrLeague)
+                // .Where(pl => pl.CurrentTeam.CurrLeague.Name == "American Conference of Amateur Football")
+                .Where(pl => pl.LastName == "Lopez")
+                .ToList();
+
+            ViewBag.ProblemEight = _context.Players
+                .Include(pl => pl.CurrentTeam)
+                .Where(pl => pl.LastName == "Flores")
+                .Where(pl => pl.CurrentTeam.TeamName != "Roughriders")
+                .ToList();
+
             return View();
         }
 

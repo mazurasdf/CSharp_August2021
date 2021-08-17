@@ -6,11 +6,25 @@
             <li>...all teams in the Atlantic Soccer Conference</li>
             <li>...all (current) players on the Boston Penguins (Hint: Boston is the Location, Penguins is the TeamName)</li>
             <li>...all (current) players in the International Collegiate Baseball Conference</li>
-            <li>...all (current) players in the American Conference of Amateur Football with last name "Lopez"</li>
+            <li>...all (current) players in the American Conference of Amateur Football with last name "Lopez"
+                <ul>
+                @foreach(Player pl in ViewBag.ProblemFour)
+                {
+                    <li>@pl.FirstName @pl.LastName @pl.CurrentTeam.CurrLeague.Name</li>
+                }
+                </ul>
+            </li>
             <li>...all football players</li>
             <li>...all teams with a (current) player named "Sophia"</li>
             <li>...all leagues with a (current) player named "Sophia"</li>
-            <li>...everyone with the last name "Flores" who DOESN'T (currently) play for the Washington Roughriders</li>
+            <li>...everyone with the last name "Flores" who DOESN'T (currently) play for the Washington Roughriders
+                <ul>
+                @foreach(Player pl in ViewBag.ProblemEight)
+                {
+                    <li>@pl.FirstName @pl.LastName, @pl.CurrentTeam.Location @pl.CurrentTeam.TeamName</li>
+                }
+                </ul>
+            </li>
         </ol>
     </div>
 </div>

@@ -1,0 +1,22 @@
+<div class="container">
+    <div>
+        <a href="/addListing" class="btn btn-primary">Add a listing</a>
+    </div>
+
+    <h1>Things for sale from everyone!</h1>
+    <table class="table table-dark table-hover">
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Seller</th>
+        </tr>
+        @foreach(Listing lst in ViewBag.AllListings)
+        {
+            <tr>
+                <td>@lst.Name</td>
+                <td>$@lst.Price</td>
+                <td>@lst.Seller.FirstName @lst.Seller.LastName</td>
+            </tr>
+        }
+    </table>
+</div>
