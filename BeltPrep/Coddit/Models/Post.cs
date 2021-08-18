@@ -14,6 +14,9 @@ namespace Coddit.Models
         public string Title {get;set;}
         [Required]
         public string Link {get;set;}
+        [Required]
+        public string Topic {get;set;}
+        [Required]
         public int UserId {get;set;}
         public User Creator {get;set;}
         public List<Comment> CommentsMade {get;set;}

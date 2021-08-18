@@ -15,7 +15,7 @@
                 <h3><a href="@post.Link">@post.Title</a></h3>
                 <p>posted by @post.Creator.UserName</p>
                 <p>on @post.CreatedAt</p>
-                <p><a href="/posts/@post.PostId">@post.CommentsMade.Count comments</a> Topic: <a href="/posts/topic/@post.Topic">@post.Topic</a></p>
+                <p><a href="/posts/@post.PostId">@post.CommentsMade.Count comments</a> Topic: @post.Topic</p>
             </div>
         </div>
     }

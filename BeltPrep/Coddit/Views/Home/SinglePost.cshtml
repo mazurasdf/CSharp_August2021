@@ -1,0 +1,35 @@
+@model Comment
+
+<div id="headerDiv">
+    <h1><a href="/posts/new">make post</a></h1>
+    <h1><a href="#">@ViewBag.LoggedUser.UserName</a></h1>
+</div>
+
+<div>
+    <div class="postBox">
+        <div class="postLikes">
+            <span><a href="/posts/@ViewBag.SinglePost.PostId/like">👍</a></span>
+            <span>@ViewBag.SinglePost.Likes.Count</span>
+        </div>
+        <div class="postBoxInfo">
+            <h3><a href="@ViewBag.SinglePost.Link">@ViewBag.SinglePost.Title</a></h3>
+            <p>posted by @ViewBag.SinglePost.Creator.UserName</p>
+            <p>on @ViewBag.SinglePost.CreatedAt</p>
+            <p><a href="/posts/@ViewBag.SinglePost.PostId">@ViewBag.SinglePost.CommentsMade.Count comments</a> Topic: @ViewBag.SinglePost.Topic</p>
+        </div>
+    </div>
+
+    <form asp-controller="Home" asp-action="AddComment" method="post">
+        <input type="hidden" asp-for="PostId" value="@ViewBag.SinglePost.PostId">
+        <textarea asp-for="Content">
+        </textarea>
+        <input type="submit" class="btn btn-success">
+    </form>
+
+    @foreach(Comment cmt in ViewBag.SinglePost.CommentsMade)
+    {
+        <div class="commentBox">
+            <b>@cmt.Creator.UserName</b> says "@cmt.Content"
+        </div>
+    }
+</div>

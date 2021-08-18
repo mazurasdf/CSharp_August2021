@@ -72,7 +72,7 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
-#container, #flexContainer{
+.container{
   width: 80%;
   margin: 0px auto;
   min-height: 100vh;
@@ -86,4 +86,36 @@ body {
 
 .smcontainer{
   width: 45%;
+}
+
+#headerDiv{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.postBox{
+  width: 95%;
+  margin: 10px auto;
+  display: flex;
+  justify-content: flex-start;
+  border: 1px solid rgb(99, 99, 99);
+}
+
+.postLikes{
+  height: 100%;
+  width: 10%;
+  font-size: xx-large;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.commentBox{
+  border: 1px solid rgb(99, 99, 99);
+  width: 50%;
+  margin: 10px auto;
+  padding: 5px;
+  background-color: #dcfcf4;
 }

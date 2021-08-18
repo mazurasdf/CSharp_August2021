@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Coddit.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Coddit.Controllers
 {
@@ -88,6 +88,128 @@ namespace Coddit.Controllers
             int? loggedUserId = HttpContext.Session.GetInt32("userId");
             if(loggedUserId == null) return RedirectToAction("Index");
             
+            ViewBag.LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == loggedUserId);
+            ViewBag.AllPosts = _context.Posts
+                .Include(post => post.Creator)
+                .Include(post => post.Likes)
+                .Include(post => post.CommentsMade)
+                .ToList();
+
+            return View();
+        }
+
+        [HttpGet("posts/new")]
+        public IActionResult PostForm()
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("userId");
+            if(loggedUserId == null) return RedirectToAction("Index");
+
+            return View();
+        }
+
+        [HttpPost("posts/submit")]
+        public IActionResult SubmitPost(Post newPost)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("userId");
+            if(loggedUserId == null) return RedirectToAction("Index");
+
+            if(ModelState.IsValid)
+            {
+                newPost.UserId = (int)loggedUserId;
+                _context.Add(newPost);
+                _context.SaveChanges();
+
+                return RedirectToAction("Main");
+            }
+            return View("PostForm");
+        }
+
+        [HttpGet("posts/{id}")]
+        public IActionResult SinglePost(int id)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("userId");
+            if(loggedUserId == null) return RedirectToAction("Index");
+
+            ViewBag.LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == loggedUserId);
+            ViewBag.SinglePost = _context.Posts
+                .Include(post => post.Creator)
+                .Include(post=> post.CommentsMade)
+                .ThenInclude(comment => comment.Creator)
+                .Include(post => post.Likes)
+                .FirstOrDefault(post => post.PostId == id);
+
+            return View();
+        }
+
+        [HttpPost("addComment")]
+        public IActionResult AddComment(Comment newComment)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("userId");
+            if(loggedUserId == null) return RedirectToAction("Index");
+
+            if(ModelState.IsValid)
+            {
+                newComment.UserId = (int)loggedUserId;
+                _context.Add(newComment);
+                _context.SaveChanges();
+
+                return RedirectToAction("SinglePost", new {id=newComment.PostId});
+            }
+
+            ViewBag.LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == loggedUserId);
+            ViewBag.SinglePost = _context.Posts
+                .Include(post => post.Creator)
+                .Include(post=> post.CommentsMade)
+                .ThenInclude(comment => comment.Creator)
+                .Include(post => post.Likes)
+                .FirstOrDefault(post => post.PostId == newComment.PostId);
+
+            return View("SinglePost");
+        }
+
+        [HttpGet("posts/{postId}/like")]
+        public IActionResult AddLike(int postId)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("userId");
+            if(loggedUserId == null) return RedirectToAction("Index");
+
+            Like checkForLike = _context.Likes
+                .FirstOrDefault(lk => lk.UserId ==(int)loggedUserId && lk.PostId == postId);
+
+            if(checkForLike == null)
+            {
+                Console.WriteLine("like will be added");
+                Like newLike = new Like();
+                newLike.UserId = (int)loggedUserId;
+                newLike.PostId = postId;
+
+                _context.Add(newLike);
+                _context.SaveChanges();
+            }
+            else
+            {
+                _context.Likes.Remove(checkForLike);
+                _context.SaveChanges();
+            }
+            
+
+            return RedirectToAction("SinglePost", new {id=postId});
+        }
+
+        [HttpGet("posts/topic/{topic}")]
+        public IActionResult TopicPage(string topic)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("userId");
+            if(loggedUserId == null) return RedirectToAction("Index");
+            
+            ViewBag.LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == loggedUserId);
+            ViewBag.AllPosts = _context.Posts
+                .Include(post => post.Creator)
+                .Include(post => post.Likes)
+                .Include(post => post.CommentsMade)
+                .Where(post => post.Topic == topic)
+                .ToList();
+
             return View();
         }
 
